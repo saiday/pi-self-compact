@@ -37,7 +37,7 @@ pi install npm:pi-self-compact
 Or run it from a checkout without installing:
 
 ```
-pi -e /path/to/pi-self-compact/extensions/self-compact.ts
+pi -e /path/to/pi-self-compact/extensions/index.ts
 ```
 
 ## Use
