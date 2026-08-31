@@ -1,0 +1,41 @@
+{
+  "name": "pi-self-compact",
+  "version": "0.1.0",
+  "description": "Pi extension that lets the agent compact its own session context, via a tool the model can call or a /self-compact command.",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "pi-package",
+    "pi",
+    "pi-extension",
+    "pi-coding-agent",
+    "compaction",
+    "context"
+  ],
+  "files": [
+    "extensions",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "pack:check": "npm pack --dry-run",
+    "validate": "npm run typecheck && npm run pack:check"
+  },
+  "exports": {
+    "./package.json": "./package.json"
+  },
+  "pi": {
+    "extensions": [
+      "./extensions/self-compact.ts"
+    ]
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-coding-agent": "^0.84.4",
+    "typebox": "^1.1.38",
+    "typescript": "^6.0.3"
+  }
+}
