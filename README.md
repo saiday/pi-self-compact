@@ -1,12 +1,32 @@
 # pi-self-compact
 
-A [pi](https://github.com/badlogic/pi-mono) extension that lets the agent compact its own
+A [pi](https://pi.dev) extension that lets the agent compact its own
 session context.
 
 `/compact` is a TUI command: pi matches it on the editor's submit text before anything
 reaches the model, so an agent cannot trigger compaction on its own, and neither can a
 prompt template, a skill, or another session messaging in. This extension exposes the same
 compaction through the extension API, as a tool the model can call and as a command.
+
+## Why an agent needs this
+
+Compaction is normally something only the person at the keyboard can do, and the two
+moments it is most needed are moments nobody is typing.
+
+**Another session asks for it.** With cross-session messaging, sessions delegate work to
+each other, and the session that knows a context is bloated is usually not the one with a
+human in front of it. Ask a peer session to compact without this extension and the honest
+answer is that it cannot: it can only relay the request back to a person. With it, the
+peer compacts and carries on, and the requesting session gets a real confirmation instead
+of a hand-off.
+
+**A run of sequential tasks.** An agent working through a queue accumulates the whole
+history of task 1 while doing task 7, and none of it is relevant. Auto-compaction does not
+help much here: it fires on a token threshold, which lands wherever it lands, usually in
+the middle of something. A task boundary is the right cut point, and the agent is the only
+one who knows when it reaches one. "Compact after each batch, keeping the migration
+decisions" becomes an instruction it can actually follow, with the summary steered to what
+the next batch needs rather than to a generic recap.
 
 ## Install
 

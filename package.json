@@ -4,6 +4,18 @@
   "description": "Pi extension that lets the agent compact its own session context, via a tool the model can call or a /self-compact command.",
   "type": "module",
   "license": "MIT",
+  "author": {
+    "name": "Saiday",
+    "url": "https://github.com/saiday"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saiday/pi-self-compact.git"
+  },
+  "bugs": {
+    "url": "https://github.com/saiday/pi-self-compact/issues"
+  },
+  "homepage": "https://github.com/saiday/pi-self-compact#readme",
   "keywords": [
     "pi-package",
     "pi",
