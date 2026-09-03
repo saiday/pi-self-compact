@@ -56,26 +56,21 @@ ends the session's activity, and something outside has to wake the agent up agai
 
 ## Asking another session to compact
 
-You do not write the call. Write the message as you would to a person: compact first,
-what the summary must keep, and what to do afterwards.
+You do not write the call. Say it as you would to a person:
 
 ```
 Your context is too large. Compact first, keep the EmergeCore function signatures and
 this round's two items, then do round 2 of docs/review.md and message me when it is done.
 ```
 
-The agent composes the call from that. The tool description tells it to put the deferred
-work in `resume` and to make the call the last thing in the turn, so the work does not run
-against the context it was asked to shrink, which is the one order that wastes the
-compaction.
+The agent composes the call, deferring the work into `resume` so it does not run against
+the context it was asked to shrink.
 
-Two replies come back: the compaction is queued, then later the work is done. If only the
-first arrives, the agent compacted without a `resume` and is now idle; send the work
-again. A message that names no follow-up gets a compaction and nothing else, which is the
-right answer to "you should compact".
+Two replies come back: queued, then done. Only the first means it compacted without a
+`resume` and is idle, so send the work again.
 
 A message that arrives while compaction is running is dropped by pi, so wait for the
-agent to answer before sending the next one.
+agent's reply before sending the next one.
 
 ## When compaction runs
 
