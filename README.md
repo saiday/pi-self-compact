@@ -35,12 +35,24 @@ compact_session({ instructions: "keep the API schema decisions and the failing t
 ```
 
 ```
+compact_session({
+  instructions: "keep the failing test names",
+  resume: "Read docs/review.md and make the two changes it lists, then report back.",
+})
+```
+
+```
 /self-compact keep the API schema decisions
 ```
 
-`instructions` is optional and steers what the summary preserves. `/self-compact` is an
+`instructions` steers what the summary preserves. `resume` is what the agent does next:
+the text is delivered as a user message once the summary is in place, so the work runs
+in a fresh turn against the compacted context. Both are optional. `/self-compact` is an
 extension command dispatched at the session layer, so it works in RPC mode and anywhere
 else a prompt can be submitted programmatically.
+
+`resume` is what makes "compact, then do this" a single request. Without it a compaction
+ends the session's activity, and something outside has to wake the agent up again.
 
 ## When compaction runs
 
@@ -50,6 +62,14 @@ finishes its reply, then compaction runs. The summary is never visible in the tu
 requested it. `/self-compact` compacts immediately when the session is idle. A second
 request while one is queued or running is refused rather than stacked. In TUI mode the
 footer shows `compaction queued`, then `compacting…`.
+
+A compaction that does not run reaches the model rather than only the UI: the agent is
+told the context is unchanged, so it cannot report a compaction that never happened, and
+a `resume` still runs. Pi refuses to compact a session smaller than its `keepRecentTokens`
+setting (20k by default), which is the common reason.
+
+A message that arrives while compaction is running is dropped by pi, so a peer asking for
+a compaction should wait for the agent to answer before sending the next one.
 
 ## License
 

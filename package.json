@@ -1,6 +1,6 @@
 {
   "name": "pi-self-compact",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Pi extension that lets the agent compact its own session context, via a tool the model can call or a /self-compact command.",
   "type": "module",
   "license": "MIT",
