@@ -54,6 +54,29 @@ else a prompt can be submitted programmatically.
 `resume` is what makes "compact, then do this" a single request. Without it a compaction
 ends the session's activity, and something outside has to wake the agent up again.
 
+## Asking another session to compact
+
+You do not write the call. Write the message as you would to a person: compact first,
+what the summary must keep, and what to do afterwards.
+
+```
+Your context is too large. Compact first, keep the EmergeCore function signatures and
+this round's two items, then do round 2 of docs/review.md and message me when it is done.
+```
+
+The agent composes the call from that. The tool description tells it to put the deferred
+work in `resume` and to make the call the last thing in the turn, so the work does not run
+against the context it was asked to shrink, which is the one order that wastes the
+compaction.
+
+Two replies come back: the compaction is queued, then later the work is done. If only the
+first arrives, the agent compacted without a `resume` and is now idle; send the work
+again. A message that names no follow-up gets a compaction and nothing else, which is the
+right answer to "you should compact".
+
+A message that arrives while compaction is running is dropped by pi, so wait for the
+agent to answer before sending the next one.
+
 ## When compaction runs
 
 `session.compact()` aborts the active turn before it summarizes, so a request made during
@@ -67,9 +90,6 @@ A compaction that does not run reaches the model rather than only the UI: the ag
 told the context is unchanged, so it cannot report a compaction that never happened, and
 a `resume` still runs. Pi refuses to compact a session smaller than its `keepRecentTokens`
 setting (20k by default), which is the common reason.
-
-A message that arrives while compaction is running is dropped by pi, so a peer asking for
-a compaction should wait for the agent to answer before sending the next one.
 
 ## License
 
